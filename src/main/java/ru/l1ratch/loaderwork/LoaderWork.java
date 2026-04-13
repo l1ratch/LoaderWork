@@ -42,7 +42,7 @@ public class LoaderWork extends JavaPlugin {
             command.setTabCompleter(this);
         }
 
-        getLogger().info("LoaderWork enabled");
+        getLogger().info("LoaderWork включён");
     }
 
     @Override
@@ -50,7 +50,7 @@ public class LoaderWork extends JavaPlugin {
         if (controller != null) {
             controller.shutdown();
         }
-        getLogger().info("LoaderWork disabled");
+        getLogger().info("LoaderWork выключен");
     }
 
     public void reloadPluginState() {
@@ -141,7 +141,7 @@ public class LoaderWork extends JavaPlugin {
                 for (String materialKey : byBlockSection.getKeys(false)) {
                     Material material = Material.getMaterial(materialKey.toUpperCase());
                     if (material == null) {
-                        getLogger().warning("Unknown reward material '" + materialKey + "' in job '" + jobId + "'.");
+                        getLogger().warning("Неизвестный материал награды '" + materialKey + "' в работе '" + jobId + "'.");
                         continue;
                     }
                     blockRewards.put(material, loadReward(byBlockSection.getConfigurationSection(materialKey)));
@@ -191,7 +191,7 @@ public class LoaderWork extends JavaPlugin {
 
             Material material = Material.getMaterial(String.valueOf(materialValue).toUpperCase());
             if (material == null || !material.isItem()) {
-                getLogger().warning("Unknown reward item '" + materialValue + "'.");
+                getLogger().warning("Неизвестный предмет награды '" + materialValue + "'.");
                 continue;
             }
 
@@ -218,7 +218,7 @@ public class LoaderWork extends JavaPlugin {
         for (String blockName : blockNames) {
             Material material = Material.getMaterial(blockName.toUpperCase());
             if (material == null || !material.isBlock()) {
-                getLogger().warning("Unknown block '" + blockName + "' in job '" + jobId + "'.");
+                getLogger().warning("Неизвестный блок '" + blockName + "' в работе '" + jobId + "'.");
                 continue;
             }
             result.add(material);

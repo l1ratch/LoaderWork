@@ -93,11 +93,11 @@ public class RegionService {
 
     public String describeRegion(String regionId) {
         if (regionId == null || regionId.trim().isEmpty()) {
-            return "unset";
+            return "не задано";
         }
 
         CuboidRegion region = regions.get(normalize(regionId));
-        return region == null ? "missing" : region.describe();
+        return region == null ? "отсутствует" : region.describe();
     }
 
     private CuboidRegion loadRegion(ConfigurationSection section) {

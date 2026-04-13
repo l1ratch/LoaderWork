@@ -127,17 +127,17 @@ public class CuboidRegion {
 
     public String describe() {
         if (worldName == null) {
-            return "incomplete";
+            return "неполный";
         }
 
-        return "world=" + worldName
+        return "мир=" + worldName
                 + ", pos1=" + formatPoint(pos1X, pos1Y, pos1Z)
                 + ", pos2=" + formatPoint(pos2X, pos2Y, pos2Z);
     }
 
     private String formatPoint(Integer x, Integer y, Integer z) {
         if (x == null || y == null || z == null) {
-            return "unset";
+            return "не задано";
         }
         return x + "," + y + "," + z;
     }

@@ -1,48 +1,48 @@
 # LoaderWork
 
-`LoaderWork` is a Minecraft `1.21+` plugin for Spigot/Paper that turns simple block hauling into a configurable job system.
+`LoaderWork` - плагин для Minecraft `1.21+` на Spigot/Paper, который превращает перенос блоков в настраиваемую систему работ.
 
-## What it does
+## Что умеет
 
-1. A player selects a job manually or gets one automatically in the pickup area.
-2. The player crouches and holds still to pick up an allowed block.
-3. The block becomes a carried load with visual and movement effects.
-4. The player brings it to the dropoff area.
-5. The player crouches and holds still again to unload it.
-6. The plugin gives rewards and restores the original block later.
+1. Игрок выбирает работу вручную или получает её автоматически в зоне подъёма.
+2. Игрок приседает и стоит на месте, чтобы поднять разрешённый блок.
+3. Блок становится переносимым грузом с визуальными эффектами.
+4. Игрок несёт его в зону сдачи.
+5. Игрок снова приседает и стоит на месте, чтобы сдать груз.
+6. Плагин выдаёт награду и позже возвращает исходный блок в мир.
 
-## Features
+## Возможности
 
-- Job profiles with separate settings
-- Pickup and dropoff cuboids stored in the plugin config
-- Hold-to-pickup and hold-to-dropoff gameplay
-- Visual carried block using `BlockDisplay`
-- Weight effects through slowness and optional fatigue
-- Navigation particles toward the dropoff area
-- Rewards with money, experience, console commands and items
-- Fully configurable messages
-- Safe cleanup on cancel, disconnect, reload and job disable
+- Профили работ с отдельными настройками
+- Pickup и dropoff кубоиды, хранящиеся в конфиге
+- Геймплей с удержанием на месте при подъёме и сдаче
+- Визуальный переносимый блок через `BlockDisplay`
+- Замедление и опциональная усталость при переноске
+- Навигационные частицы в сторону зоны сдачи
+- Награды деньгами, опытом, командами консоли и предметами
+- Полностью настраиваемые сообщения
+- Безопасная очистка при отмене, выходе, перезагрузке и отключении работы
 
-## Requirements
+## Требования
 
-- Minecraft server `1.21+`
-- Spigot or Paper
+- Сервер Minecraft `1.21+`
+- Spigot или Paper
 - Java `21`
-- Optional: `Vault` for money rewards
+- Опционально: `Vault` для денежных наград
 
-Without `Vault`, money rewards are skipped and the rest of the plugin still works.
+Без `Vault` денежные награды пропускаются, остальные функции продолжают работать.
 
-## Installation
+## Установка
 
-1. Build the plugin jar with Maven.
-2. Place the jar into your server `plugins/` folder.
-3. Start the server once so the default config is generated.
-4. Edit `config.yml` or use the in-game admin commands.
-5. Reload the plugin with `/loader reload` or restart the server.
+1. Собери `jar` через Maven.
+2. Положи файл в папку `plugins/` на сервере.
+3. Один раз запусти сервер, чтобы сгенерировался конфиг.
+4. Отредактируй `config.yml` или используй команды администратора в игре.
+5. Перезагрузи плагин командой `/loader reload` или перезапусти сервер.
 
-## Commands
+## Команды
 
-### Player commands
+### Команды игрока
 
 ```text
 /loader list
@@ -51,7 +51,7 @@ Without `Vault`, money rewards are skipped and the rest of the plugin still work
 /loader cancel
 ```
 
-### Admin commands
+### Команды администратора
 
 ```text
 /loader job create <id>
@@ -63,30 +63,30 @@ Without `Vault`, money rewards are skipped and the rest of the plugin still work
 /loader reload
 ```
 
-Detailed setup guide: [GUIDE-RU.md](GUIDE-RU.md)
+Подробный гайд по настройке: [GUIDE-RU.md](GUIDE-RU.md)
 
-## Permissions
+## Права
 
-- `loader.use` - base gameplay access
-- `loader.cancel` - cancel pickup or carrying
-- `loader.admin` - access to admin commands
+- `loader.use` - базовый доступ к игровому процессу
+- `loader.cancel` - отмена подъёма или переноски груза
+- `loader.admin` - доступ к административным командам
 
-You can also add a per-job permission in the job profile:
+Можно также задать отдельное право для каждой работы:
 
 ```yaml
 permission: "loader.job.quarry"
 ```
 
-## Configuration overview
+## Кратко о конфиге
 
-Main sections:
+Основные разделы:
 
 - `settings`
 - `jobs`
 - `regions`
 - `messages`
 
-### Settings
+### Пример настроек
 
 ```yaml
 settings:
@@ -96,13 +96,13 @@ settings:
   carry-particle-interval-ticks: 10
 ```
 
-### Job example
+### Пример работы
 
 ```yaml
 jobs:
   quarry_worker:
     enabled: true
-    display-name: "Quarry Worker"
+    display-name: "Карьеровщик"
     permission: ""
     pickup-region: "quarry_pickup"
     dropoff-region: "quarry_dropoff"
@@ -134,7 +134,7 @@ jobs:
           experience: 3
 ```
 
-### Region example
+### Пример региона
 
 ```yaml
 regions:
@@ -150,20 +150,20 @@ regions:
       z: 110
 ```
 
-## Public notes
+## Коротко
 
-- Jobs can be enabled or disabled from in-game admin commands.
-- If a job is disabled while someone is carrying a load, the session is stopped safely.
-- If `allowed-blocks` is empty, any transportable block is allowed.
-- Region names and job ids are restricted to safe identifiers.
+- Работы можно включать и отключать прямо из игры.
+- Если работу отключили во время переноски, сессия завершится безопасно.
+- Если `allowed-blocks` пустой, можно переносить любой подходящий блок.
+- Идентификаторы работ и регионов ограничены безопасным форматом.
 
-## Project files
+## Файлы проекта
 
-- Main plugin bootstrap: `src/main/java/ru/l1ratch/loaderwork/LoaderWork.java`
-- Core gameplay controller: `src/main/java/ru/l1ratch/loaderwork/LoaderController.java`
-- Default configuration: `src/main/resources/config.yml`
-- Plugin metadata: `src/main/resources/plugin.yml`
+- Точка входа плагина: `src/main/java/ru/l1ratch/loaderwork/LoaderWork.java`
+- Основная логика: `src/main/java/ru/l1ratch/loaderwork/LoaderController.java`
+- Конфиг по умолчанию: `src/main/resources/config.yml`
+- Метаданные плагина: `src/main/resources/plugin.yml`
 
-## License
+## Лицензия
 
-Add the license that fits your distribution model before publishing widely.
+Перед публикацией добавь лицензию, которая подходит твоей модели распространения.

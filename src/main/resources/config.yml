@@ -1,33 +1,33 @@
-# LoaderWork config
+# Конфиг LoaderWork
 # Minecraft 1.21+ / Spigot / Paper
 #
-# Main sections:
-# - settings: global plugin behavior
-# - jobs: job profiles
-# - regions: cuboid region definitions
-# - messages: chat and action bar texts
+# Основные разделы:
+# - settings: общие настройки плагина
+# - jobs: профили работ
+# - regions: прямоугольные регионы
+# - messages: тексты чата и action bar
 #
-# Region ids and job ids should use only:
-# a-z, 0-9, underscore (_), and dash (-)
+# Идентификаторы работ и регионов должны содержать только:
+# a-z, 0-9, подчёркивание (_) и дефис (-)
 
 settings:
-  # Automatically select a job when a player enters its pickup region.
+  # Автоматически выбирать работу, когда игрок заходит в pickup-регион.
   auto-select-job-by-region: true
 
-  # How often the main logic updates, in ticks.
-  # Lower values feel smoother but use a bit more CPU.
+  # Как часто обновляется основная логика, в тиках.
+  # Меньшее значение даёт более плавную работу, но немного сильнее грузит CPU.
   update-interval-ticks: 2
 
-  # How much movement is still considered "standing still" while holding.
+  # Насколько сильное движение ещё считается "стоянием на месте" во время удержания.
   hold-max-move-distance: 0.18
 
-  # How often the carried block particle effect appears, in ticks.
+  # Как часто появляются частицы у переносимого блока, в тиках.
   carry-particle-interval-ticks: 10
 
 jobs:
   quarry_worker:
     enabled: true
-    display-name: "Карьерный грузчик"
+    display-name: "Карьеровщик"
     permission: ""
     pickup-region: "quarry_pickup"
     dropoff-region: "quarry_dropoff"
@@ -36,18 +36,18 @@ jobs:
     respawn-delay-ticks: 600
 
     carry:
-      # Slowness amplifier: 0 = Slowness I, 1 = Slowness II, etc.
+      # Усилитель замедления: 0 = Slowness I, 1 = Slowness II и т.д.
       slowness-amplifier: 2
-      # Fatigue amplifier: 0 = no fatigue, 1 = Fatigue I, etc.
+      # Усилитель усталости: 0 = без усталости, 1 = Fatigue I и т.д.
       fatigue-amplifier: 1
-      # How often navigation particles point toward the dropoff region.
+      # Как часто навигационные частицы показывают направление к dropoff-региону.
       navigation-interval-ticks: 20
-      # Height of the visual block behind the player.
+      # Высота визуального блока за игроком.
       display-height: 0.35
-      # Distance behind the player for the visual block.
+      # Смещение визуального блока позади игрока.
       display-behind-offset: 0.95
 
-    # Leave this list empty to allow any transportable block.
+    # Если список пуст, можно переносить любой подходящий блок.
     allowed-blocks:
       - STONE
       - COBBLESTONE
@@ -69,7 +69,7 @@ jobs:
           money: 5.0
           experience: 3
           commands:
-            - "say %player% delivered iron ore"
+            - "say %player% сдал железную руду"
         COAL_ORE:
           money: 3.0
           experience: 2
@@ -79,7 +79,7 @@ jobs:
 
   lumberjack:
     enabled: true
-    display-name: "Лесной грузчик"
+    display-name: "Лесоруб"
     permission: ""
     pickup-region: "forest_pickup"
     dropoff-region: "forest_dropoff"
@@ -116,48 +116,48 @@ jobs:
             - "effect give %player% minecraft:haste 20 0 true"
 
 regions:
-  # Pickup region for quarry_worker
+  # Pickup-регион для quarry_worker
   quarry_pickup: {}
-  # Dropoff region for quarry_worker
+  # Dropoff-регион для quarry_worker
   quarry_dropoff: {}
 
-  # Pickup region for lumberjack
+  # Pickup-регион для lumberjack
   forest_pickup: {}
-  # Dropoff region for lumberjack
+  # Dropoff-регион для lumberjack
   forest_dropoff: {}
 
 messages:
   prefix: "&6[LoaderWork] &r"
 
-  no-permission: "&cYou do not have permission for this action."
-  plugin-reloaded: "&aPlugin configuration reloaded."
-  no-active-job: "&cYou do not have an active job. Use &e/loader job <id>&c or enter a pickup region."
-  job-not-found: "&cThat job does not exist."
-  job-no-permission: "&cYou do not have access to this job."
-  job-command-usage: "&eUsage: /loader job <id>"
-  job-selected: "&aYou selected the job: &e%job%&a."
-  job-selected-auto: "&aJob selected automatically: &e%job%&a."
+  no-permission: "&cУ вас нет прав на это действие."
+  plugin-reloaded: "&aКонфигурация плагина перезагружена."
+  no-active-job: "&cУ вас не выбрана работа. Используйте &e/loader job <id>&c или зайдите в pickup-зону."
+  job-not-found: "&cТакой работы не существует."
+  job-no-permission: "&cУ вас нет доступа к этой работе."
+  job-command-usage: "&eИспользование: /loader job <id>"
+  job-selected: "&aВы выбрали работу: &e%job%&a."
+  job-selected-auto: "&aРабота выбрана автоматически: &e%job%&a."
 
-  not-in-pickup-region: "&cYou must be inside the pickup region."
-  pickup-invalid-block: "&cThat block cannot be used as cargo."
-  pickup-block-not-allowed: "&cThat block is not allowed for this job."
-  pickup-already-running: "&eA pickup process is already running. Keep crouching and do not move."
-  pickup-started: "&eYou started picking up &6%block%&e. Keep crouching and stay still."
-  pickup-progress: "&6Pickup progress: &e%progress%%"
-  pickup-complete: "&aCargo picked up. Carry &e%block% &ato the dropoff region."
-  pickup-cancelled-not-sneaking: "&cYou stopped crouching. Pickup cancelled."
-  pickup-cancelled-moved: "&cYou moved. Pickup cancelled."
-  pickup-cancelled-left-region: "&cYou left the pickup region. Pickup cancelled."
-  pickup-cancelled-block-changed: "&cThe block changed or became unavailable. Pickup cancelled."
-  pickup-cancelled-manual: "&ePickup cancelled manually."
+  not-in-pickup-region: "&cВы должны находиться в pickup-регионе."
+  pickup-invalid-block: "&cЭтот блок нельзя использовать как груз."
+  pickup-block-not-allowed: "&cЭтот блок не разрешён для этой работы."
+  pickup-already-running: "&eПроцесс подъёма уже идёт. Продолжайте приседать и не двигайтесь."
+  pickup-started: "&eВы начали поднимать блок &6%block%&e. Продолжайте приседать и стойте на месте."
+  pickup-progress: "&6Прогресс подъёма: &e%progress%%"
+  pickup-complete: "&aГруз поднят. Отнесите &e%block% &aв dropoff-регион."
+  pickup-cancelled-not-sneaking: "&cВы перестали приседать. Подъём отменён."
+  pickup-cancelled-moved: "&cВы двинулись. Подъём отменён."
+  pickup-cancelled-left-region: "&cВы вышли из pickup-региона. Подъём отменён."
+  pickup-cancelled-block-changed: "&cБлок изменился или стал недоступен. Подъём отменён."
+  pickup-cancelled-manual: "&eПодъём отменён вручную."
 
-  carry-state: "&eYou are carrying &6%block%&e. Go to the dropoff region and crouch on the spot."
-  carry-cancelled: "&eCargo transport cancelled. The block was returned."
-  dropoff-ready: "&eYou are in the dropoff region. Crouch and stay still to unload."
-  dropoff-progress: "&6Dropoff progress: &e%progress%%"
-  dropoff-cancelled-moved: "&cYou moved. Dropoff cancelled."
-  dropoff-complete: "&aCargo delivered. Reward: &e%money%&a, xp: &e%experience%&a, items: &e%items%&a."
+  carry-state: "&eВы несёте &6%block%&e. Идите в dropoff-регион и присядьте на месте."
+  carry-cancelled: "&eПеренос груза отменён. Блок возвращён."
+  dropoff-ready: "&eВы в dropoff-регионе. Присядьте и стойте на месте, чтобы сдать груз."
+  dropoff-progress: "&6Прогресс сдачи: &e%progress%%"
+  dropoff-cancelled-moved: "&cВы двинулись. Сдача отменена."
+  dropoff-complete: "&aГруз сдан. Награда: &e%money%&a, опыт: &e%experience%&a, предметы: &e%items%&a."
 
-  nothing-to-cancel: "&eThere is nothing to cancel right now."
-  region-point-set: "&aCorner &e%corner%&a saved for region &e%region%&a: &f%location%&a."
-  region-cleared: "&aRegion cleared for job &e%job%&a."
+  nothing-to-cancel: "&eСейчас нечего отменять."
+  region-point-set: "&aТочка &e%corner%&a сохранена для региона &e%region%&a: &f%location%&a."
+  region-cleared: "&aРегион для работы &e%job%&a очищен."
