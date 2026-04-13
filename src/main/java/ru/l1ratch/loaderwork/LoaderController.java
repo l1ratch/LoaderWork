@@ -317,7 +317,7 @@ public class LoaderController implements Listener {
 
             if (player == null || profile == null || !profile.isEnabled()) {
                 if (player != null && profile != null && !profile.isEnabled()) {
-                    player.sendMessage("\u00A7eThis job is temporarily disabled.");
+                    player.sendMessage("\u00A7eЭта работа временно отключена.");
                 }
                 pickupProcesses.remove(process.getPlayerId());
                 continue;
@@ -349,7 +349,7 @@ public class LoaderController implements Listener {
             if (player == null || profile == null || !profile.isEnabled()) {
                 if (player != null) {
                     endSession(player, true, false, null);
-                    player.sendMessage("\u00A7eThis job is temporarily disabled.");
+                    player.sendMessage("\u00A7eЭта работа временно отключена.");
                 }
                 continue;
             }
@@ -588,7 +588,7 @@ public class LoaderController implements Listener {
             display.setInterpolationDuration(1);
             return display;
         } catch (Exception exception) {
-            plugin.getLogger().warning("Failed to spawn BlockDisplay for carried block: " + exception.getMessage());
+            plugin.getLogger().warning("Не удалось создать BlockDisplay для переносимого блока: " + exception.getMessage());
             return null;
         }
     }
@@ -685,22 +685,22 @@ public class LoaderController implements Listener {
         }
 
         if (plugin.getJobProfiles().isEmpty()) {
-            sender.sendMessage("\u00A7cNo jobs configured.");
+            sender.sendMessage("\u00A7cРаботы не настроены.");
             return true;
         }
 
-        sender.sendMessage("\u00A76Available jobs:");
+        sender.sendMessage("\u00A76Доступные работы:");
         for (JobProfile profile : plugin.getJobProfiles().values()) {
             String line = "\u00A77- \u00A7e" + profile.getId() + "\u00A77 -> \u00A7f" + profile.getDisplayName();
             if (!profile.isEnabled()) {
-                line += " \u00A78[disabled]";
+                line += " \u00A78[отключена]";
             } else if (sender instanceof Player) {
                 Player player = (Player) sender;
                 boolean selected = profile.getId().equalsIgnoreCase(selectedJobs.get(player.getUniqueId()));
                 boolean available = profile.canUse(player);
-                line += selected ? " \u00A7a[selected]" : available ? " \u00A77[available]" : " \u00A7c[locked]";
+                line += selected ? " \u00A7a[выбрана]" : available ? " \u00A77[доступна]" : " \u00A7c[закрыта]";
             } else {
-                line += " \u00A77[enabled]";
+                line += " \u00A77[включена]";
             }
             sender.sendMessage(line);
         }
@@ -728,7 +728,7 @@ public class LoaderController implements Listener {
         }
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage("Only players can select jobs.");
+            sender.sendMessage("Выбирать работу могут только игроки.");
             return true;
         }
 
@@ -750,7 +750,7 @@ public class LoaderController implements Listener {
         }
 
         if (!profile.isEnabled()) {
-            player.sendMessage("\u00A7eThis job is temporarily disabled.");
+            player.sendMessage("\u00A7eЭта работа временно отключена.");
             return true;
         }
 
@@ -771,18 +771,18 @@ public class LoaderController implements Listener {
         }
 
         if (args.length < 3) {
-            sender.sendMessage("\u00A7eUsage: /loader job create <id>");
+            sender.sendMessage("\u00A7eИспользование: /loader job create <id>");
             return true;
         }
 
         String jobId = normalizeId(args[2]);
         if (!isValidId(jobId)) {
-            sender.sendMessage("\u00A7cJob id must use only a-z, 0-9, _ and -.");
+            sender.sendMessage("\u00A7cИдентификатор работы может содержать только a-z, 0-9, _ и -.");
             return true;
         }
 
         if (plugin.getJobProfile(jobId) != null) {
-            sender.sendMessage("\u00A7cJob already exists.");
+            sender.sendMessage("\u00A7cТакая работа уже существует.");
             return true;
         }
 
@@ -812,7 +812,7 @@ public class LoaderController implements Listener {
         plugin.saveConfig();
         plugin.reloadJobsFromConfig();
         plugin.reloadRegionsFromConfig();
-        sender.sendMessage("\u00A7aJob created: \u00A7e" + jobId + "\u00A7a. Now set regions with /loader region.");
+        sender.sendMessage("\u00A7aРабота создана: \u00A7e" + jobId + "\u00A7a. Теперь задайте регионы через /loader region.");
         return true;
     }
 
@@ -823,7 +823,7 @@ public class LoaderController implements Listener {
         }
 
         if (args.length < 3) {
-            sender.sendMessage("\u00A7eUsage: /loader job delete <id>");
+            sender.sendMessage("\u00A7eИспользование: /loader job delete <id>");
             return true;
         }
 
@@ -837,13 +837,13 @@ public class LoaderController implements Listener {
         plugin.getConfig().set("jobs." + profile.getId(), null);
         plugin.saveConfig();
         plugin.reloadJobsFromConfig();
-        sender.sendMessage("\u00A7aJob deleted: \u00A7e" + profile.getId() + "\u00A7a. Region data was left intact.");
+        sender.sendMessage("\u00A7aРабота удалена: \u00A7e" + profile.getId() + "\u00A7a. Данные региона оставлены.");
         return true;
     }
 
     private boolean handleInfoCommand(CommandSender sender) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("Only players can inspect their current job.");
+            sender.sendMessage("Просматривать текущую работу могут только игроки.");
             return true;
         }
 
@@ -860,14 +860,14 @@ public class LoaderController implements Listener {
         }
 
         CarrySession session = carrySessions.get(player.getUniqueId());
-        sender.sendMessage("\u00A76Current job: \u00A7e" + profile.getDisplayName() + " \u00A77[" + profile.getId() + "]");
-        sender.sendMessage("\u00A77Pickup region: \u00A7f" + profile.getPickupRegion() + " \u00A77(" + plugin.getRegionService().describeRegion(profile.getPickupRegion()) + ")");
-        sender.sendMessage("\u00A77Dropoff region: \u00A7f" + profile.getDropoffRegion() + " \u00A77(" + plugin.getRegionService().describeRegion(profile.getDropoffRegion()) + ")");
-        sender.sendMessage("\u00A77Enabled: \u00A7f" + (profile.isEnabled() ? "yes" : "no"));
+        sender.sendMessage("\u00A76Текущая работа: \u00A7e" + profile.getDisplayName() + " \u00A77[" + profile.getId() + "]");
+        sender.sendMessage("\u00A77Pickup-регион: \u00A7f" + profile.getPickupRegion() + " \u00A77(" + plugin.getRegionService().describeRegion(profile.getPickupRegion()) + ")");
+        sender.sendMessage("\u00A77Dropoff-регион: \u00A7f" + profile.getDropoffRegion() + " \u00A77(" + plugin.getRegionService().describeRegion(profile.getDropoffRegion()) + ")");
+        sender.sendMessage("\u00A77Включена: \u00A7f" + (profile.isEnabled() ? "да" : "нет"));
         sender.sendMessage("\u00A77Pickup hold: \u00A7f" + ticksToSeconds(profile.getPickupHoldTicks()) + " sec.");
         sender.sendMessage("\u00A77Dropoff hold: \u00A7f" + ticksToSeconds(profile.getDropoffHoldTicks()) + " sec.");
         sender.sendMessage("\u00A77Block respawn: \u00A7f" + ticksToSeconds(profile.getRespawnDelayTicks()) + " sec.");
-        sender.sendMessage("\u00A77Allowed blocks: \u00A7f" + (profile.getAllowedBlocks().isEmpty() ? "any block" : profile.getAllowedBlocks().size()));
+        sender.sendMessage("\u00A77Разрешённые блоки: \u00A7f" + (profile.getAllowedBlocks().isEmpty() ? "любой блок" : profile.getAllowedBlocks().size()));
         sender.sendMessage("\u00A77Status: \u00A7f" + (session == null ? "idle" : "carrying " + formatBlock(session.getBlockType())));
         return true;
     }
@@ -879,7 +879,7 @@ public class LoaderController implements Listener {
         }
 
         if (args.length < 2) {
-            sender.sendMessage("\u00A7eUsage: /loader inspect <id>");
+            sender.sendMessage("\u00A7eИспользование: /loader inspect <id>");
             return true;
         }
 
@@ -890,9 +890,9 @@ public class LoaderController implements Listener {
         }
 
         sender.sendMessage("\u00A76Job inspect: \u00A7e" + profile.getDisplayName() + " \u00A77[" + profile.getId() + "]");
-        sender.sendMessage("\u00A77Permission: \u00A7f" + (profile.getPermission() == null ? "-" : profile.getPermission()));
-        sender.sendMessage("\u00A77Pickup region: \u00A7f" + profile.getPickupRegion() + " \u00A77(" + plugin.getRegionService().describeRegion(profile.getPickupRegion()) + ")");
-        sender.sendMessage("\u00A77Dropoff region: \u00A7f" + profile.getDropoffRegion() + " \u00A77(" + plugin.getRegionService().describeRegion(profile.getDropoffRegion()) + ")");
+        sender.sendMessage("\u00A77Права: \u00A7f" + (profile.getPermission() == null ? "-" : profile.getPermission()));
+        sender.sendMessage("\u00A77Pickup-регион: \u00A7f" + profile.getPickupRegion() + " \u00A77(" + plugin.getRegionService().describeRegion(profile.getPickupRegion()) + ")");
+        sender.sendMessage("\u00A77Dropoff-регион: \u00A7f" + profile.getDropoffRegion() + " \u00A77(" + plugin.getRegionService().describeRegion(profile.getDropoffRegion()) + ")");
         sender.sendMessage("\u00A77Pickup hold: \u00A7f" + profile.getPickupHoldTicks() + " ticks (" + ticksToSeconds(profile.getPickupHoldTicks()) + " sec.)");
         sender.sendMessage("\u00A77Dropoff hold: \u00A7f" + profile.getDropoffHoldTicks() + " ticks (" + ticksToSeconds(profile.getDropoffHoldTicks()) + " sec.)");
         sender.sendMessage("\u00A77Respawn delay: \u00A7f" + profile.getRespawnDelayTicks() + " ticks (" + ticksToSeconds(profile.getRespawnDelayTicks()) + " sec.)");
@@ -900,13 +900,13 @@ public class LoaderController implements Listener {
         sender.sendMessage("\u00A77Carry fatigue: \u00A7f" + profile.getFatigueAmplifier());
         sender.sendMessage("\u00A77Navigation interval: \u00A7f" + profile.getNavigationIntervalTicks());
         sender.sendMessage("\u00A77Display offsets: \u00A7fheight=" + profile.getDisplayHeight() + " behind=" + profile.getDisplayBehindOffset());
-        sender.sendMessage("\u00A77Allowed blocks: \u00A7f" + (profile.getAllowedBlocks().isEmpty() ? "any block" : profile.getAllowedBlocks().size()));
+        sender.sendMessage("\u00A77Разрешённые блоки: \u00A7f" + (profile.getAllowedBlocks().isEmpty() ? "любой блок" : profile.getAllowedBlocks().size()));
         return true;
     }
 
     private boolean handleCancelCommand(CommandSender sender) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("Only players can cancel active actions.");
+            sender.sendMessage("Отменять действия могут только игроки.");
             return true;
         }
 
@@ -934,7 +934,7 @@ public class LoaderController implements Listener {
 
     private boolean handleRegionCommand(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("Only players can edit regions.");
+            sender.sendMessage("Редактировать регионы могут только игроки.");
             return true;
         }
 
@@ -945,7 +945,7 @@ public class LoaderController implements Listener {
         }
 
         if (args.length < 4) {
-            sender.sendMessage("\u00A7eUsage: /loader region <job> <pickup|dropoff> <pos1|pos2|show|clear>");
+            sender.sendMessage("\u00A7eИспользование: /loader region <job> <pickup|dropoff> <pos1|pos2|show|clear>");
             return true;
         }
 
@@ -989,7 +989,7 @@ public class LoaderController implements Listener {
         } else if ("pos2".equals(action) || "2".equals(action)) {
             corner = RegionCorner.POS2;
         } else {
-            sender.sendMessage("\u00A7cAction must be pos1, pos2, show or clear.");
+            sender.sendMessage("\u00A7cДействие должно быть pos1, pos2, show или clear.");
             return true;
         }
 
@@ -1013,7 +1013,7 @@ public class LoaderController implements Listener {
         }
 
         if (args.length < 3) {
-            sender.sendMessage("\u00A7eUsage: /loader edit <job> <show|set|blocks|reward>");
+            sender.sendMessage("\u00A7eИспользование: /loader edit <job> <show|set|blocks|reward>");
             return true;
         }
 
@@ -1057,13 +1057,13 @@ public class LoaderController implements Listener {
         }
 
         if (!"set".equalsIgnoreCase(args[1])) {
-            sender.sendMessage("\u00A7eUsage: /loader config show");
-            sender.sendMessage("\u00A7eUsage: /loader config set <auto-select-job-by-region|update-interval-ticks|hold-max-move-distance|carry-particle-interval-ticks> <value>");
+            sender.sendMessage("\u00A7eИспользование: /loader config show");
+            sender.sendMessage("\u00A7eИспользование: /loader config set <auto-select-job-by-region|update-interval-ticks|hold-max-move-distance|carry-particle-interval-ticks> <value>");
             return true;
         }
 
         if (args.length < 4) {
-            sender.sendMessage("\u00A7eUsage: /loader config set <key> <value>");
+            sender.sendMessage("\u00A7eИспользование: /loader config set <key> <value>");
             return true;
         }
 
@@ -1072,45 +1072,45 @@ public class LoaderController implements Listener {
         if ("auto-select-job-by-region".equals(key)) {
             Boolean parsed = parseBoolean(value);
             if (parsed == null) {
-                sender.sendMessage("\u00A7cValue must be true or false.");
+                sender.sendMessage("\u00A7cЗначение должно быть true или false.");
                 return true;
             }
             plugin.getConfig().set("settings.auto-select-job-by-region", parsed);
         } else if ("update-interval-ticks".equals(key)) {
             Integer parsed = parseInteger(value, 1, 20);
             if (parsed == null) {
-                sender.sendMessage("\u00A7cInvalid number.");
+                sender.sendMessage("\u00A7cНекорректное число.");
                 return true;
             }
             plugin.getConfig().set("settings.update-interval-ticks", parsed);
         } else if ("hold-max-move-distance".equals(key)) {
             Double parsed = parseDouble(value);
             if (parsed == null || parsed < 0.05D) {
-                sender.sendMessage("\u00A7cInvalid number.");
+                sender.sendMessage("\u00A7cНекорректное число.");
                 return true;
             }
             plugin.getConfig().set("settings.hold-max-move-distance", parsed);
         } else if ("carry-particle-interval-ticks".equals(key)) {
             Integer parsed = parseInteger(value, 2, 40);
             if (parsed == null) {
-                sender.sendMessage("\u00A7cInvalid number.");
+                sender.sendMessage("\u00A7cНекорректное число.");
                 return true;
             }
             plugin.getConfig().set("settings.carry-particle-interval-ticks", parsed);
         } else {
-            sender.sendMessage("\u00A7cUnknown config key.");
+            sender.sendMessage("\u00A7cНеизвестный ключ конфигурации.");
             return true;
         }
 
         plugin.saveConfig();
         plugin.reloadSettingsFromConfig();
-        sender.sendMessage("\u00A7aSettings updated.");
+        sender.sendMessage("\u00A7aНастройки обновлены.");
         return true;
     }
 
     private boolean handleJobSetCommand(CommandSender sender, JobProfile profile, String[] args) {
         if (args.length < 5) {
-            sender.sendMessage("\u00A7eUsage: /loader edit <job> set <field> <value>");
+            sender.sendMessage("\u00A7eИспользование: /loader edit <job> set <field> <value>");
             return true;
         }
 
@@ -1125,7 +1125,7 @@ public class LoaderController implements Listener {
         } else if ("pickup-region".equals(field)) {
             String regionId = normalizeId(value);
             if (!isValidId(regionId)) {
-                sender.sendMessage("\u00A7cInvalid region id. Use only a-z, 0-9, _ and -.");
+                sender.sendMessage("\u00A7cНекорректный id региона. Используйте только a-z, 0-9, _ и -.");
                 return true;
             }
             plugin.getConfig().set(path + ".pickup-region", regionId);
@@ -1135,7 +1135,7 @@ public class LoaderController implements Listener {
         } else if ("dropoff-region".equals(field)) {
             String regionId = normalizeId(value);
             if (!isValidId(regionId)) {
-                sender.sendMessage("\u00A7cInvalid region id. Use only a-z, 0-9, _ and -.");
+                sender.sendMessage("\u00A7cНекорректный id региона. Используйте только a-z, 0-9, _ и -.");
                 return true;
             }
             plugin.getConfig().set(path + ".dropoff-region", regionId);
@@ -1145,56 +1145,56 @@ public class LoaderController implements Listener {
         } else if ("pickup-hold".equals(field) || "pickup-hold-ticks".equals(field)) {
             Integer parsed = parseInteger(value, 10, Integer.MAX_VALUE);
             if (parsed == null) {
-                sender.sendMessage("\u00A7cInvalid number.");
+                sender.sendMessage("\u00A7cНекорректное число.");
                 return true;
             }
             plugin.getConfig().set(path + ".pickup-hold-ticks", parsed);
         } else if ("dropoff-hold".equals(field) || "dropoff-hold-ticks".equals(field)) {
             Integer parsed = parseInteger(value, 10, Integer.MAX_VALUE);
             if (parsed == null) {
-                sender.sendMessage("\u00A7cInvalid number.");
+                sender.sendMessage("\u00A7cНекорректное число.");
                 return true;
             }
             plugin.getConfig().set(path + ".dropoff-hold-ticks", parsed);
         } else if ("respawn".equals(field) || "respawn-delay".equals(field) || "respawn-delay-ticks".equals(field)) {
             Integer parsed = parseInteger(value, 0, Integer.MAX_VALUE);
             if (parsed == null) {
-                sender.sendMessage("\u00A7cInvalid number.");
+                sender.sendMessage("\u00A7cНекорректное число.");
                 return true;
             }
             plugin.getConfig().set(path + ".respawn-delay-ticks", parsed);
         } else if ("carry-slow".equals(field) || "slowness".equals(field)) {
             Integer parsed = parseInteger(value, 0, 10);
             if (parsed == null) {
-                sender.sendMessage("\u00A7cInvalid number.");
+                sender.sendMessage("\u00A7cНекорректное число.");
                 return true;
             }
             plugin.getConfig().set(path + ".carry.slowness-amplifier", parsed);
         } else if ("carry-fatigue".equals(field) || "fatigue".equals(field)) {
             Integer parsed = parseInteger(value, 0, 10);
             if (parsed == null) {
-                sender.sendMessage("\u00A7cInvalid number.");
+                sender.sendMessage("\u00A7cНекорректное число.");
                 return true;
             }
             plugin.getConfig().set(path + ".carry.fatigue-amplifier", parsed);
         } else if ("carry-nav".equals(field) || "navigation".equals(field)) {
             Integer parsed = parseInteger(value, 0, 200);
             if (parsed == null) {
-                sender.sendMessage("\u00A7cInvalid number.");
+                sender.sendMessage("\u00A7cНекорректное число.");
                 return true;
             }
             plugin.getConfig().set(path + ".carry.navigation-interval-ticks", parsed);
         } else if ("carry-height".equals(field) || "height".equals(field)) {
             Double parsed = parseDouble(value);
             if (parsed == null) {
-                sender.sendMessage("\u00A7cInvalid number.");
+                sender.sendMessage("\u00A7cНекорректное число.");
                 return true;
             }
             plugin.getConfig().set(path + ".carry.display-height", parsed);
         } else if ("carry-offset".equals(field) || "offset".equals(field)) {
             Double parsed = parseDouble(value);
             if (parsed == null) {
-                sender.sendMessage("\u00A7cInvalid number.");
+                sender.sendMessage("\u00A7cНекорректное число.");
                 return true;
             }
             plugin.getConfig().set(path + ".carry.display-behind-offset", parsed);
@@ -1206,7 +1206,7 @@ public class LoaderController implements Listener {
             }
             plugin.getConfig().set(path + ".enabled", parsed);
         } else {
-            sender.sendMessage("\u00A7cUnknown field.");
+            sender.sendMessage("\u00A7cНеизвестное поле.");
             return true;
         }
 
@@ -1219,7 +1219,7 @@ public class LoaderController implements Listener {
 
     private boolean handleJobBlocksCommand(CommandSender sender, JobProfile profile, String[] args) {
         if (args.length < 4) {
-            sender.sendMessage("\u00A7eUsage: /loader edit <job> blocks <list|add|remove|clear>");
+            sender.sendMessage("\u00A7eИспользование: /loader edit <job> blocks <list|add|remove|clear>");
             return true;
         }
 
@@ -1228,7 +1228,7 @@ public class LoaderController implements Listener {
         List<String> blocks = new ArrayList<String>(plugin.getConfig().getStringList(path));
 
         if ("list".equals(action)) {
-            sender.sendMessage("\u00A76Allowed blocks for \u00A7e" + profile.getId() + "\u00A76: \u00A7f" + (blocks.isEmpty() ? "any block" : joinList(blocks)));
+            sender.sendMessage("\u00A76Разрешённые блоки для \u00A7e" + profile.getId() + "\u00A76: \u00A7f" + (blocks.isEmpty() ? "любой блок" : joinList(blocks)));
             return true;
         }
 
@@ -1236,12 +1236,12 @@ public class LoaderController implements Listener {
             plugin.getConfig().set(path, new ArrayList<String>());
             plugin.saveConfig();
             plugin.reloadJobsFromConfig();
-            sender.sendMessage("\u00A7aAllowed blocks cleared.");
+            sender.sendMessage("\u00A7aСписок разрешённых блоков очищен.");
             return true;
         }
 
         if (args.length < 5) {
-            sender.sendMessage("\u00A7eUsage: /loader edit <job> blocks <add|remove> <material> [material...]");
+            sender.sendMessage("\u00A7eИспользование: /loader edit <job> blocks <add|remove> <material> [material...]");
             return true;
         }
 
@@ -1249,7 +1249,7 @@ public class LoaderController implements Listener {
         for (int i = 4; i < args.length; i++) {
             Material material = Material.getMaterial(args[i].toUpperCase(Locale.ROOT));
             if (material == null || !material.isBlock()) {
-                sender.sendMessage("\u00A7cUnknown block: " + args[i]);
+                sender.sendMessage("\u00A7cНеизвестный блок: " + args[i]);
                 continue;
             }
             String materialName = material.name();
@@ -1263,7 +1263,7 @@ public class LoaderController implements Listener {
                     changed = true;
                 }
             } else {
-                sender.sendMessage("\u00A7cAction must be add, remove, list or clear.");
+                sender.sendMessage("\u00A7cДействие должно быть add, remove, list или clear.");
                 return true;
             }
         }
@@ -1274,13 +1274,13 @@ public class LoaderController implements Listener {
             plugin.reloadJobsFromConfig();
         }
 
-        sender.sendMessage("\u00A7aAllowed blocks updated for \u00A7e" + profile.getId() + "\u00A7a.");
+        sender.sendMessage("\u00A7aСписок разрешённых блоков обновлён для \u00A7e" + profile.getId() + "\u00A7a.");
         return true;
     }
 
     private boolean handleJobRewardCommand(CommandSender sender, JobProfile profile, String[] args) {
         if (args.length < 4) {
-            sender.sendMessage("\u00A7eUsage: /loader edit <job> reward <default|block>");
+            sender.sendMessage("\u00A7eИспользование: /loader edit <job> reward <default|block>");
             return true;
         }
 
@@ -1293,14 +1293,14 @@ public class LoaderController implements Listener {
             return handleBlockRewardCommand(sender, profile, args);
         }
 
-        sender.sendMessage("\u00A7cReward scope must be default or block.");
+        sender.sendMessage("\u00A7cОбласть награды должна быть default или block.");
         return true;
     }
 
     private boolean handleDefaultRewardCommand(CommandSender sender, JobProfile profile, String[] args) {
         String basePath = "jobs." + profile.getId() + ".rewards.default";
         if (args.length < 5) {
-            sender.sendMessage("\u00A7eUsage: /loader edit <job> reward default <show|set|addcmd|delcmd|additem|delitem>");
+            sender.sendMessage("\u00A7eИспользование: /loader edit <job> reward default <show|set|addcmd|delcmd|additem|delitem>");
             return true;
         }
 
@@ -1312,7 +1312,7 @@ public class LoaderController implements Listener {
 
         if ("set".equals(action)) {
             if (args.length < 7) {
-                sender.sendMessage("\u00A7eUsage: /loader edit <job> reward default set <money|experience> <value>");
+                sender.sendMessage("\u00A7eИспользование: /loader edit <job> reward default set <money|experience> <value>");
                 return true;
             }
             String field = args[5].toLowerCase(Locale.ROOT);
@@ -1320,30 +1320,30 @@ public class LoaderController implements Listener {
             if ("money".equals(field)) {
                 Double parsed = parseDouble(value);
                 if (parsed == null) {
-                    sender.sendMessage("\u00A7cInvalid number.");
+                    sender.sendMessage("\u00A7cНекорректное число.");
                     return true;
                 }
                 plugin.getConfig().set(basePath + ".money", parsed);
             } else if ("experience".equals(field) || "xp".equals(field)) {
                 Integer parsed = parseInteger(value, 0, Integer.MAX_VALUE);
                 if (parsed == null) {
-                    sender.sendMessage("\u00A7cInvalid number.");
+                    sender.sendMessage("\u00A7cНекорректное число.");
                     return true;
                 }
                 plugin.getConfig().set(basePath + ".experience", parsed);
             } else {
-                sender.sendMessage("\u00A7cField must be money or experience.");
+                sender.sendMessage("\u00A7cПоле должно быть money или experience.");
                 return true;
             }
             plugin.saveConfig();
             plugin.reloadJobsFromConfig();
-            sender.sendMessage("\u00A7aDefault reward updated.");
+            sender.sendMessage("\u00A7aНаграда по умолчанию обновлена.");
             return true;
         }
 
         if ("addcmd".equals(action)) {
             if (args.length < 7) {
-                sender.sendMessage("\u00A7eUsage: /loader edit <job> reward default addcmd <command...>");
+                sender.sendMessage("\u00A7eИспользование: /loader edit <job> reward default addcmd <command...>");
                 return true;
             }
             List<String> commands = new ArrayList<String>(plugin.getConfig().getStringList(basePath + ".commands"));
@@ -1351,38 +1351,38 @@ public class LoaderController implements Listener {
             plugin.getConfig().set(basePath + ".commands", commands);
             plugin.saveConfig();
             plugin.reloadJobsFromConfig();
-            sender.sendMessage("\u00A7aCommand added to default reward.");
+            sender.sendMessage("\u00A7aКоманда добавлена в награду по умолчанию.");
             return true;
         }
 
         if ("delcmd".equals(action)) {
             if (args.length < 6) {
-                sender.sendMessage("\u00A7eUsage: /loader edit <job> reward default delcmd <index>");
+                sender.sendMessage("\u00A7eИспользование: /loader edit <job> reward default delcmd <index>");
                 return true;
             }
             List<String> commands = new ArrayList<String>(plugin.getConfig().getStringList(basePath + ".commands"));
             Integer index = parseInteger(args[5], 1, Integer.MAX_VALUE);
             if (index == null || index > commands.size()) {
-                sender.sendMessage("\u00A7cInvalid command index.");
+                sender.sendMessage("\u00A7cНекорректный индекс команды.");
                 return true;
             }
             commands.remove((int) index - 1);
             plugin.getConfig().set(basePath + ".commands", commands);
             plugin.saveConfig();
             plugin.reloadJobsFromConfig();
-            sender.sendMessage("\u00A7aCommand removed from default reward.");
+            sender.sendMessage("\u00A7aКоманда удалена из награды по умолчанию.");
             return true;
         }
 
         if ("additem".equals(action)) {
             if (args.length < 7) {
-                sender.sendMessage("\u00A7eUsage: /loader edit <job> reward default additem <material> <amount>");
+                sender.sendMessage("\u00A7eИспользование: /loader edit <job> reward default additem <material> <amount>");
                 return true;
             }
             Material material = Material.getMaterial(args[5].toUpperCase(Locale.ROOT));
             Integer amount = parseInteger(args[6], 1, Integer.MAX_VALUE);
             if (material == null || !material.isItem() || amount == null) {
-                sender.sendMessage("\u00A7cInvalid item.");
+                sender.sendMessage("\u00A7cНекорректный предмет.");
                 return true;
             }
             List<Map<String, Object>> items = new ArrayList<Map<String, Object>>(readRewardItems(basePath));
@@ -1390,42 +1390,42 @@ public class LoaderController implements Listener {
             plugin.getConfig().set(basePath + ".items", items);
             plugin.saveConfig();
             plugin.reloadJobsFromConfig();
-            sender.sendMessage("\u00A7aItem reward added.");
+            sender.sendMessage("\u00A7aПредмет добавлен в награду.");
             return true;
         }
 
         if ("delitem".equals(action)) {
             if (args.length < 6) {
-                sender.sendMessage("\u00A7eUsage: /loader edit <job> reward default delitem <index>");
+                sender.sendMessage("\u00A7eИспользование: /loader edit <job> reward default delitem <index>");
                 return true;
             }
             List<Map<String, Object>> items = new ArrayList<Map<String, Object>>(readRewardItems(basePath));
             Integer index = parseInteger(args[5], 1, Integer.MAX_VALUE);
             if (index == null || index > items.size()) {
-                sender.sendMessage("\u00A7cInvalid item index.");
+                sender.sendMessage("\u00A7cНекорректный индекс предмета.");
                 return true;
             }
             items.remove((int) index - 1);
             plugin.getConfig().set(basePath + ".items", items);
             plugin.saveConfig();
             plugin.reloadJobsFromConfig();
-            sender.sendMessage("\u00A7aItem reward removed.");
+            sender.sendMessage("\u00A7aПредмет удалён из награды.");
             return true;
         }
 
-        sender.sendMessage("\u00A7cAction must be show, set, addcmd, delcmd, additem or delitem.");
+        sender.sendMessage("\u00A7cДействие должно быть show, set, addcmd, delcmd, additem или delitem.");
         return true;
     }
 
     private boolean handleBlockRewardCommand(CommandSender sender, JobProfile profile, String[] args) {
         if (args.length < 6) {
-            sender.sendMessage("\u00A7eUsage: /loader edit <job> reward block <material> <show|set|addcmd|delcmd|additem|delitem|clear>");
+            sender.sendMessage("\u00A7eИспользование: /loader edit <job> reward block <material> <show|set|addcmd|delcmd|additem|delitem|clear>");
             return true;
         }
 
         Material material = Material.getMaterial(args[4].toUpperCase(Locale.ROOT));
         if (material == null || !material.isItem()) {
-            sender.sendMessage("\u00A7cUnknown material.");
+            sender.sendMessage("\u00A7cНеизвестный материал.");
             return true;
         }
 
@@ -1440,13 +1440,13 @@ public class LoaderController implements Listener {
             plugin.getConfig().set(blockPath, null);
             plugin.saveConfig();
             plugin.reloadJobsFromConfig();
-            sender.sendMessage("\u00A7aBlock reward cleared.");
+            sender.sendMessage("\u00A7aНаграда для блока очищена.");
             return true;
         }
 
         if ("set".equals(action)) {
             if (args.length < 8) {
-                sender.sendMessage("\u00A7eUsage: /loader edit <job> reward block <material> set <money|experience> <value>");
+                sender.sendMessage("\u00A7eИспользование: /loader edit <job> reward block <material> set <money|experience> <value>");
                 return true;
             }
             String field = args[6].toLowerCase(Locale.ROOT);
@@ -1454,30 +1454,30 @@ public class LoaderController implements Listener {
             if ("money".equals(field)) {
                 Double parsed = parseDouble(value);
                 if (parsed == null) {
-                    sender.sendMessage("\u00A7cInvalid number.");
+                    sender.sendMessage("\u00A7cНекорректное число.");
                     return true;
                 }
                 plugin.getConfig().set(blockPath + ".money", parsed);
             } else if ("experience".equals(field) || "xp".equals(field)) {
                 Integer parsed = parseInteger(value, 0, Integer.MAX_VALUE);
                 if (parsed == null) {
-                    sender.sendMessage("\u00A7cInvalid number.");
+                    sender.sendMessage("\u00A7cНекорректное число.");
                     return true;
                 }
                 plugin.getConfig().set(blockPath + ".experience", parsed);
             } else {
-                sender.sendMessage("\u00A7cField must be money or experience.");
+                sender.sendMessage("\u00A7cПоле должно быть money или experience.");
                 return true;
             }
             plugin.saveConfig();
             plugin.reloadJobsFromConfig();
-            sender.sendMessage("\u00A7aBlock reward updated.");
+            sender.sendMessage("\u00A7aНаграда для блока обновлена.");
             return true;
         }
 
         if ("addcmd".equals(action)) {
             if (args.length < 8) {
-                sender.sendMessage("\u00A7eUsage: /loader edit <job> reward block <material> addcmd <command...>");
+                sender.sendMessage("\u00A7eИспользование: /loader edit <job> reward block <material> addcmd <command...>");
                 return true;
             }
             List<String> commands = new ArrayList<String>(plugin.getConfig().getStringList(blockPath + ".commands"));
@@ -1485,38 +1485,38 @@ public class LoaderController implements Listener {
             plugin.getConfig().set(blockPath + ".commands", commands);
             plugin.saveConfig();
             plugin.reloadJobsFromConfig();
-            sender.sendMessage("\u00A7aCommand added to block reward.");
+            sender.sendMessage("\u00A7aКоманда добавлена в награду для блока.");
             return true;
         }
 
         if ("delcmd".equals(action)) {
             if (args.length < 7) {
-                sender.sendMessage("\u00A7eUsage: /loader edit <job> reward block <material> delcmd <index>");
+                sender.sendMessage("\u00A7eИспользование: /loader edit <job> reward block <material> delcmd <index>");
                 return true;
             }
             List<String> commands = new ArrayList<String>(plugin.getConfig().getStringList(blockPath + ".commands"));
             Integer index = parseInteger(args[6], 1, Integer.MAX_VALUE);
             if (index == null || index > commands.size()) {
-                sender.sendMessage("\u00A7cInvalid command index.");
+                sender.sendMessage("\u00A7cНекорректный индекс команды.");
                 return true;
             }
             commands.remove((int) index - 1);
             plugin.getConfig().set(blockPath + ".commands", commands);
             plugin.saveConfig();
             plugin.reloadJobsFromConfig();
-            sender.sendMessage("\u00A7aCommand removed from block reward.");
+            sender.sendMessage("\u00A7aКоманда удалена из награды для блока.");
             return true;
         }
 
         if ("additem".equals(action)) {
             if (args.length < 8) {
-                sender.sendMessage("\u00A7eUsage: /loader edit <job> reward block <material> additem <material> <amount>");
+                sender.sendMessage("\u00A7eИспользование: /loader edit <job> reward block <material> additem <material> <amount>");
                 return true;
             }
             Material itemMaterial = Material.getMaterial(args[6].toUpperCase(Locale.ROOT));
             Integer amount = parseInteger(args[7], 1, Integer.MAX_VALUE);
             if (itemMaterial == null || !itemMaterial.isItem() || amount == null) {
-                sender.sendMessage("\u00A7cInvalid item.");
+                sender.sendMessage("\u00A7cНекорректный предмет.");
                 return true;
             }
             List<Map<String, Object>> items = new ArrayList<Map<String, Object>>(readRewardItems(blockPath));
@@ -1524,44 +1524,44 @@ public class LoaderController implements Listener {
             plugin.getConfig().set(blockPath + ".items", items);
             plugin.saveConfig();
             plugin.reloadJobsFromConfig();
-            sender.sendMessage("\u00A7aItem reward added.");
+            sender.sendMessage("\u00A7aПредмет добавлен в награду.");
             return true;
         }
 
         if ("delitem".equals(action)) {
             if (args.length < 7) {
-                sender.sendMessage("\u00A7eUsage: /loader edit <job> reward block <material> delitem <index>");
+                sender.sendMessage("\u00A7eИспользование: /loader edit <job> reward block <material> delitem <index>");
                 return true;
             }
             List<Map<String, Object>> items = new ArrayList<Map<String, Object>>(readRewardItems(blockPath));
             Integer index = parseInteger(args[6], 1, Integer.MAX_VALUE);
             if (index == null || index > items.size()) {
-                sender.sendMessage("\u00A7cInvalid item index.");
+                sender.sendMessage("\u00A7cНекорректный индекс предмета.");
                 return true;
             }
             items.remove((int) index - 1);
             plugin.getConfig().set(blockPath + ".items", items);
             plugin.saveConfig();
             plugin.reloadJobsFromConfig();
-            sender.sendMessage("\u00A7aItem reward removed.");
+            sender.sendMessage("\u00A7aПредмет удалён из награды.");
             return true;
         }
 
-        sender.sendMessage("\u00A7cAction must be show, set, addcmd, delcmd, additem, delitem or clear.");
+        sender.sendMessage("\u00A7cДействие должно быть show, set, addcmd, delcmd, additem, delitem или clear.");
         return true;
     }
 
     private void sendJobSummary(CommandSender sender, JobProfile profile) {
-        sender.sendMessage("\u00A76Job: \u00A7e" + profile.getDisplayName() + " \u00A77[" + profile.getId() + "]");
-        sender.sendMessage("\u00A77Enabled: \u00A7f" + (profile.isEnabled() ? "yes" : "no"));
-        sender.sendMessage("\u00A77Permission: \u00A7f" + (profile.getPermission() == null || profile.getPermission().trim().isEmpty() ? "-" : profile.getPermission()));
-        sender.sendMessage("\u00A77Pickup region: \u00A7f" + profile.getPickupRegion() + " \u00A77(" + plugin.getRegionService().describeRegion(profile.getPickupRegion()) + ")");
-        sender.sendMessage("\u00A77Dropoff region: \u00A7f" + profile.getDropoffRegion() + " \u00A77(" + plugin.getRegionService().describeRegion(profile.getDropoffRegion()) + ")");
+        sender.sendMessage("\u00A76Работа: \u00A7e" + profile.getDisplayName() + " \u00A77[" + profile.getId() + "]");
+        sender.sendMessage("\u00A77Включена: \u00A7f" + (profile.isEnabled() ? "да" : "нет"));
+        sender.sendMessage("\u00A77Права: \u00A7f" + (profile.getPermission() == null || profile.getPermission().trim().isEmpty() ? "-" : profile.getPermission()));
+        sender.sendMessage("\u00A77Pickup-регион: \u00A7f" + profile.getPickupRegion() + " \u00A77(" + plugin.getRegionService().describeRegion(profile.getPickupRegion()) + ")");
+        sender.sendMessage("\u00A77Dropoff-регион: \u00A7f" + profile.getDropoffRegion() + " \u00A77(" + plugin.getRegionService().describeRegion(profile.getDropoffRegion()) + ")");
         sender.sendMessage("\u00A77Pickup hold: \u00A7f" + profile.getPickupHoldTicks());
         sender.sendMessage("\u00A77Dropoff hold: \u00A7f" + profile.getDropoffHoldTicks());
         sender.sendMessage("\u00A77Respawn delay: \u00A7f" + profile.getRespawnDelayTicks());
         sender.sendMessage("\u00A77Carry: \u00A7fslow=" + profile.getSlownessAmplifier() + ", fatigue=" + profile.getFatigueAmplifier() + ", nav=" + profile.getNavigationIntervalTicks() + ", height=" + profile.getDisplayHeight() + ", offset=" + profile.getDisplayBehindOffset());
-        sender.sendMessage("\u00A77Allowed blocks: \u00A7f" + (profile.getAllowedBlocks().isEmpty() ? "any block" : joinMaterials(profile.getAllowedBlocks())));
+        sender.sendMessage("\u00A77Разрешённые блоки: \u00A7f" + (profile.getAllowedBlocks().isEmpty() ? "любой блок" : joinMaterials(profile.getAllowedBlocks())));
     }
 
     private void sendConfigSummary(CommandSender sender) {
@@ -1577,11 +1577,11 @@ public class LoaderController implements Listener {
         int experience = plugin.getConfig().getInt(path + ".experience", 0);
         List<String> commands = plugin.getConfig().getStringList(path + ".commands");
         List<Map<String, Object>> items = new ArrayList<Map<String, Object>>(readRewardItems(path));
-        sender.sendMessage("\u00A76Reward \u00A7e" + label + "\u00A76:");
+        sender.sendMessage("\u00A76Награда \u00A7e" + label + "\u00A76:");
         sender.sendMessage("\u00A77money: \u00A7f" + money);
         sender.sendMessage("\u00A77experience: \u00A7f" + experience);
-        sender.sendMessage("\u00A77commands: \u00A7f" + (commands.isEmpty() ? "none" : String.valueOf(commands.size())));
-        sender.sendMessage("\u00A77items: \u00A7f" + (items.isEmpty() ? "none" : String.valueOf(items.size())));
+        sender.sendMessage("\u00A77commands: \u00A7f" + (commands.isEmpty() ? "нет" : String.valueOf(commands.size())));
+        sender.sendMessage("\u00A77items: \u00A7f" + (items.isEmpty() ? "нет" : String.valueOf(items.size())));
     }
 
     private List<Map<String, Object>> readRewardItems(String path) {
@@ -1609,21 +1609,21 @@ public class LoaderController implements Listener {
     }
 
     private void sendHelp(CommandSender sender) {
-        sender.sendMessage("\u00A76LoaderWork commands:");
-        sender.sendMessage("\u00A7e/loader list \u00A77- list jobs");
-        sender.sendMessage("\u00A7e/loader job <id> \u00A77- select a job");
+        sender.sendMessage("\u00A76Команды LoaderWork:");
+        sender.sendMessage("\u00A7e/loader list \u00A77- список работ");
+        sender.sendMessage("\u00A7e/loader job <id> \u00A77- выбрать работу");
         if (sender.hasPermission(ADMIN_PERMISSION)) {
-            sender.sendMessage("\u00A7e/loader job create <id> \u00A77- create a job");
-            sender.sendMessage("\u00A7e/loader job delete <id> \u00A77- delete a job");
-            sender.sendMessage("\u00A7e/loader edit <job> ... \u00A77- edit a job");
-            sender.sendMessage("\u00A7e/loader config ... \u00A77- edit global settings");
-            sender.sendMessage("\u00A7e/loader region <job> ... \u00A77- edit cuboids");
+            sender.sendMessage("\u00A7e/loader job create <id> \u00A77- создать работу");
+            sender.sendMessage("\u00A7e/loader job delete <id> \u00A77- удалить работу");
+            sender.sendMessage("\u00A7e/loader edit <job> ... \u00A77- редактировать работу");
+            sender.sendMessage("\u00A7e/loader config ... \u00A77- редактировать общие настройки");
+            sender.sendMessage("\u00A7e/loader region <job> ... \u00A77- редактировать кубоиды");
         }
-        sender.sendMessage("\u00A7e/loader info \u00A77- show current job info");
-        sender.sendMessage("\u00A7e/loader cancel \u00A77- cancel pickup or carrying");
+        sender.sendMessage("\u00A7e/loader info \u00A77- показать текущую работу");
+        sender.sendMessage("\u00A7e/loader cancel \u00A77- отменить подъём или перенос");
         if (sender.hasPermission(ADMIN_PERMISSION)) {
-            sender.sendMessage("\u00A7e/loader inspect <id> \u00A77- inspect job details");
-            sender.sendMessage("\u00A7e/loader reload \u00A77- reload config");
+            sender.sendMessage("\u00A7e/loader inspect <id> \u00A77- посмотреть детали работы");
+            sender.sendMessage("\u00A7e/loader reload \u00A77- перезагрузить конфиг");
         }
     }
 
