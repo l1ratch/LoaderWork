@@ -1,0 +1,23 @@
+name: LoaderWork
+version: '${project.version}'
+main: ru.l1ratch.loaderwork.LoaderWork
+api-version: '1.21'
+softdepend: [Vault]
+description: Job-based carrying plugin for 1.21+ with hold interactions, rewards and navigation effects
+
+commands:
+  loader:
+    description: Main LoaderWork command
+    usage: /loader <help|list|job|edit|config|info|inspect|cancel|region|reload>
+    aliases: [ld, work, jobs]
+
+permissions:
+  loader.use:
+    description: Access to LoaderWork gameplay and base commands
+    default: true
+  loader.cancel:
+    description: Ability to cancel pickup or carrying
+    default: true
+  loader.admin:
+    description: Administrative access to LoaderWork
+    default: op

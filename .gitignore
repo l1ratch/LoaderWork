@@ -1,0 +1,35 @@
+# Build output
+/target/
+/out/
+/build/
+
+# IDE metadata
+/.idea/
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings/
+.factorypath
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*.orig
+*.rej
+
+# JVM crash dumps
+hs_err_pid*
+replay_pid*
+
+# Compiled artifacts
+*.class
+*.jar
+*.war
+*.ear

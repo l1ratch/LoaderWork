@@ -1,0 +1,8 @@
+* text=auto eol=lf
+
+# Keep common binary assets binary if they are added later.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.jar binary
